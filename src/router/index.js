@@ -1,26 +1,116 @@
-import { createRouter, createWebHashHistory } from "vue-router";
-import Home from "../views/Home.vue";
-
-const routes = [
+import { createRouter, createWebHashHistory, createWebHistory } from "vue-router";
+export const routes = [
   {
     path: "/",
+    redirect: "Login",
+    hidden: true,
+  },
+  // 登录 
+  {
+    path: "/login",
+    name: "Login",
+    hidden: true,
+    component: () => import("../views/account/Login.vue")
+  },
+  // 后台首页
+  {
+    path: "/home",
     name: "Home",
-    component: Home,
+    meta: {
+      title: "控制台",
+      icon: "home"
+    },
+    component: () => import("../layout/index.vue"),
+    children: [
+      {
+        path: "/console",
+        name: "Console",
+        meta: {
+          title: "首页"
+        },
+        component: () => import("../views/console/index.vue"),
+      }
+    ]
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+    path: "/system",
+    name: "System",
+    meta: {
+      title: "系统配置",
+      icon: "system"
+    },
+    component: () => import("../layout/index.vue"),
+    children: [
+      {
+        path: "/user",
+        name: "User",
+        meta: {
+          title: "用户列表"
+        },
+        component: () => import("../views/system/User.vue"),
+      },
+      {
+        path: "/role",
+        name: "Role",
+        meta: {
+          title: "角色列表"
+        },
+        component: () => import("../views/system/Role.vue"),
+      },
+      {
+        path: "/menu",
+        name: "Menu",
+        meta: {
+          title: "菜单列表"
+        },
+        component: () => import("../views/system/Menu.vue"),
+      }
+    ]
   },
+  {
+    path: "/news",
+    name: "News",
+    meta: {
+      title: "信息管理",
+      icon: "information"
+    },
+    component: () => import("../layout/index.vue"),
+    children: [
+      {
+        path: "/newsIndex",
+        name: "NewsIndex",
+        meta: {
+          title: "信息列表"
+        },
+        component: () => import("../views/info/index.vue"),
+      },
+      {
+        path: "/newsCategory",
+        name: "NewsCategory",
+        meta: {
+          title: "信息分类"
+        },
+        component: () => import("../views/info/Category.vue"),
+      },
+      {
+        path: "/newsDetailed",
+        name: "NewsDetailed",
+        hidden: true,
+        meta: {
+          title: "信息详情"
+        },
+        component: () => import("../views/info/Detailed.vue"),
+      }
+    ]
+  }
+    
 ];
+
+
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes,
+  routes
 });
 
 export default router;
